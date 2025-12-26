@@ -1,0 +1,6 @@
+
+.venv
+.idea
+data/
+outputs/
+uv.lock

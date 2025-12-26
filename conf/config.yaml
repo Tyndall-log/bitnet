@@ -1,0 +1,47 @@
+seed: 42
+
+model:
+  id: microsoft/bitnet-b1.58-2B-4T-bf16
+  dtype: bfloat16
+  cache_dir: ./data/hf_cache
+  device: mps
+
+data:
+  name: BCCard/BCCard-Finance-Kor-QnA
+  split: train
+  cache_dir: ./data/hf_cache/datasets
+  max_length: 1024
+
+train:
+  output_dir: ./outputs/bitnet_lora_bc_card
+  num_train_epochs: 1
+  per_device_train_batch_size: 1
+  gradient_accumulation_steps: 8
+  learning_rate: 2e-4
+  weight_decay: 0.0
+  warmup_ratio: 0.03
+  logging_steps: 10
+  save_steps: 200
+  save_total_limit: 2
+  bf16: true
+  tf32: false
+#  gradient_checkpointing: true
+  gradient_checkpointing: false
+  optim: adamw_torch
+  max_grad_norm: 1.0
+
+lora:
+  r: 8
+  alpha: 16
+  dropout: 0.05
+  bias: none
+  # BitNet이 LLaMA 계열 구조면 보통 아래가 먹혀.
+  # 만약 모듈명이 다르면, 코드에서 model.named_modules()로 확인해서 바꿔줘.
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj
