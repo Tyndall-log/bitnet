@@ -4,7 +4,7 @@ model:
   id: microsoft/bitnet-b1.58-2B-4T-bf16
   dtype: bfloat16
   cache_dir: ./data/hf_cache
-  device: mps
+  device: cuda
 
 data:
   name: BCCard/BCCard-Finance-Kor-QnA
